@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { adminService } from "../services/admin.service";
+import { AdminService } from "../services/admin.service";
 
 export class AdminController {
-  private adminService: adminService;
+  private adminService: AdminService;
 }
