@@ -28,12 +28,12 @@ Database -> Model -> Service -> Controller -> Route
  ┃ ┣ 📜auth.middleware.ts
  ┃ ┗ 📜error.middleware.ts
  ┣ 📂models
- ┃ ┣ 📜Admin.ts
- ┃ ┣ 📜BookingKursi.ts
- ┃ ┣ 📜BookingRuangan.ts
- ┃ ┣ 📜Kursi.ts
- ┃ ┣ 📜Ruangan.ts
- ┃ ┗ 📜User.ts
+ ┃ ┣ 📜Admin.model.ts
+ ┃ ┣ 📜BookingKursi.model.ts
+ ┃ ┣ 📜BookingRuangan.model.ts
+ ┃ ┣ 📜Kursi.model.ts
+ ┃ ┣ 📜Ruangan.model.ts
+ ┃ ┗ 📜User.model.ts
  ┣ 📂routes
  ┃ ┣ 📜admin.routes.ts
  ┃ ┣ 📜auth.routes.ts
