@@ -1,44 +1,59 @@
-create table users (
-    id int primary key auto_increment,
-    name varchar(255) not null,
-    email varchar(255) not null,
-    password varchar(255) not null,
-    created_at timestamp default current_timestamp
-    avatar varchar(255) not null
-    role varchar(255) not null
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    avatar VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL
 );
 
-create table admin (
-    id int primary key auto_increment,
-    name varchar(255) not null,
-    email varchar(255) not null,
-    password varchar(255) not null,
-    created_at timestamp default current_timestamp
-    avatar varchar(255) not null
-    role varchar(255) not null
+CREATE TABLE admin (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    avatar VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL
 );
 
-create table ruangan (
-    id int primary key auto_increment,
-    name varchar(255) not null,
-    description varchar(255) not null,
-    created_at timestamp default current_timestamp
-    images varchar(255) not null
+CREATE TABLE ruangan (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    images VARCHAR(255) NOT NULL
 );
 
-create table kursi (
-    id int primary key auto_increment,
-    name varchar(255) not null,
-    description varchar(255) not null,
-    created_at timestamp default current_timestamp
-    ruangan_id int not null references ruangan(id) on delete cascade on update cascade
+CREATE TABLE kursi (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ruangan_id INT NOT NULL REFERENCES ruangan(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-create table booking (
-    id int primary key auto_increment,
-    name varchar(255) not null,
-    description varchar(255) not null,
-    created_at timestamp default current_timestamp
-    images varchar(255) not null
+CREATE TABLE booking_kursi (
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    type VARCHAR(255) NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    kursi_id INT NOT NULL REFERENCES kursi(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    ruangan_id INT NOT NULL REFERENCES ruangan(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+create table booking_ruangan (
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    type VARCHAR(255) NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    admin_id INT NOT NULL REFERENCES admin(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    ruangan_id INT NOT NULL REFERENCES ruangan(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
