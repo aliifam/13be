@@ -1,5 +1,5 @@
 import db from "../config/db";
-import User from "../models/User";
+import User from "../models/User.model";
 
 const createUser = async (
     name: string,

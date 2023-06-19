@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import User from "../models/User";
-import Ruangan from "../models/Ruangan";
-import Kursi from "../models/Kursi";
+import User from "../models/User.model";
+import Ruangan from "../models/Ruangan.model";
+import Kursi from "../models/Kursi.model";
 import adminService from "../services/admin.service";
 
 const login = async (req: Request, res: Response) => {
