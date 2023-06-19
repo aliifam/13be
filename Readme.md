@@ -6,10 +6,11 @@ backend for project 13
 - postgres sql
 - jsonwebtoken
 - cloudinary integration
+- typescript
 
-## MCS (model, controller, service) pattern
+## Implementing MCS (model, controller, service) pattern
 
-Database -> Model -> Service -> Controller -> Route
+Database -> Model -> Service -> Controller -> Route -> Client
 
 ## project structure
 
@@ -43,9 +44,6 @@ Database -> Model -> Service -> Controller -> Route
  ┣ 📂services
  ┃ ┣ 📜admin.service.ts
  ┃ ┣ 📜auth.service.ts
- ┃ ┣ 📜booking.service.ts
- ┃ ┣ 📜kursi.service.ts
- ┃ ┣ 📜ruangan.service.ts
  ┃ ┗ 📜user.service.ts
  ┣ 📂utils
  ┃ ┣ 📜cloudinary.utils.ts
@@ -53,3 +51,10 @@ Database -> Model -> Service -> Controller -> Route
  ┃ ┗ 📜multer.utils.ts
  ┗ 📜app.ts
 ```
+
+## PSAIT checklist
+
+- [x] implementing api based communication
+- [x] implementing json web token for authentication and authorization
+- [x] implementing cloudinary for image storage (3d party api integration)
+- [x] implementing docker for containerization

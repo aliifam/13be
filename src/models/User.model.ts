@@ -1,11 +1,9 @@
 import { Pool, QueryResult } from "pg";
 
 export interface User {
-  id: number;
   name: string;
   email: string;
   password: string;
-  created_at: Date;
   avatar: string;
   role: string;
 }
@@ -66,6 +64,15 @@ export class UserModel {
   public async deleteUser(userId: number): Promise<QueryResult> {
     try {
       const query = `DELETE FROM users WHERE id=${userId}`;
+      return this.pool.query(query);
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+
+  public async getUserByEmail(email: string): Promise<QueryResult> {
+    try {
+      const query = `SELECT * FROM users WHERE email='${email}'`;
       return this.pool.query(query);
     } catch (error) {
       throw new Error(error as string);

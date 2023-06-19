@@ -7,7 +7,7 @@ export enum UserRole {
 
 export class JwtUtils {
   private static readonly secretKey =
-    process.env.JWT_SECRET_KEY || "your-secret-key";
+    process.env.JWT_SECRET_KEY || "ini rahasia loh";
 
   public static generateToken(userId: number, role: UserRole): string {
     const token = jwt.sign({ userId, role }, JwtUtils.secretKey, {

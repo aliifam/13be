@@ -1,80 +1,114 @@
-import db from "../config/db";
-import Admin from "../models/Admin.model";
-import Kursi from "../models/Kursi.model";
-import Ruangan from "../models/Ruangan.model";
-import User from "../models/User.model";
+import { AdminModel, Admin } from "../models/Admin.model";
+import { UserModel, User } from "../models/User.model";
+import { pool } from "../config/db";
+import { Ruangan, RuanganModel } from "../models/Ruangan.model";
+import { Kursi, KursiModel } from "../models/Kursi.model";
+import {
+  BookingRuanganModel,
+  BookingRuangan,
+} from "../models/BookingRuangan.model";
 
-const login = async (email: string, password: string): Promise<string> => {
-  try {
-    const query = `SELECT * FROM users WHERE email='${email}' AND password='${password}'`;
-    const result = await db.query<Admin>(query);
-    if (result.rowCount === 0) {
-      throw new Error("Invalid email or password");
-    }
-    return result.rows[0];
-  } catch (error) {
-    throw new Error(error);
+export class AdminService {
+  private adminModel: AdminModel;
+  private userModel: UserModel;
+  private ruanganModel: RuanganModel;
+  private kursiModel: KursiModel;
+  private bookingRuanganModel: BookingRuanganModel;
+
+  constructor() {
+    this.adminModel = new AdminModel(pool);
+    this.userModel = new UserModel(pool);
+    this.ruanganModel = new RuanganModel(pool);
+    this.kursiModel = new KursiModel(pool);
+    this.bookingRuanganModel = new BookingRuanganModel(pool);
   }
-};
 
-const createRuangan = async (
-  name: string,
-  description: string,
-  capacity: number,
-  image: string
-): Promise<Ruangan> => {
-  // Implement the logic to create a new ruangan (CRUD operation)
-};
+  public async createAdmin(adminData: Admin): Promise<Admin> {
+    const newAdmin: Admin = {
+      name: adminData.name,
+      email: adminData.email,
+      password: adminData.password,
+      avatar: adminData.avatar,
+      role: adminData.role,
+    };
+    const admin = await this.adminModel.createAdmin(newAdmin);
+    return admin.rows[0];
+  }
 
-const getRuangan = async (): Promise<Ruangan[]> => {
-  // Implement the logic to get all ruangan (CRUD operation)
-};
+  public async createUser(userData: User): Promise<User> {
+    const newUser: User = {
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
+      avatar: userData.avatar,
+      role: userData.role,
+    };
+    const user = await this.userModel.createUser(newUser);
+    return user.rows[0];
+  }
 
-const updateRuangan = async (
-  ruanganId: number,
-  name: string,
-  capacity: number
-): Promise<Ruangan | null> => {
-  // Implement the logic to update a ruangan (CRUD operation)
-};
+  public async updateUser(userId: number, userData: User): Promise<User> {
+    const updatedUser = await this.userModel.updateUser(userId, userData);
+    return updatedUser.rows[0];
+  }
 
-const deleteRuangan = async (ruanganId: number): Promise<Ruangan | null> => {
-  // Implement the logic to delete a ruangan (CRUD operation)
-};
+  public async deleteUser(userId: number): Promise<User> {
+    const deletedUser = await this.userModel.deleteUser(userId);
+    return deletedUser.rows[0];
+  }
 
-const createKursi = async (
-  ruanganId: number,
-  totalKursi: number
-): Promise<Kursi[]> => {
-  // Implement the logic to create multiple kursi for a ruangan (CRUD operation)
-};
+  public async getUsers(): Promise<User[]> {
+    const users = await this.userModel.getUsers();
+    return users.rows;
+  }
 
-const getKursi = async (): Promise<Kursi[]> => {
-  // Implement the logic to get all kursi (CRUD operation)
-};
+  public async createRuangan(ruanganData: Ruangan): Promise<Ruangan> {
+    const newRuangan: Ruangan = {
+      name: ruanganData.name,
+      description: ruanganData.description,
+      images: ruanganData.images,
+    };
+    const ruangan = await this.ruanganModel.createRuangan(newRuangan);
+    return ruangan.rows[0];
+  }
 
-const updateKursi = async (
-  kursiId: number,
-  ruanganId: number
-): Promise<Kursi | null> => {
-  // Implement the logic to update a kursi (CRUD operation)
-};
+  public async updateRuangan(
+    ruanganId: number,
+    ruanganData: Ruangan
+  ): Promise<Ruangan> {
+    const updatedRuangan = await this.ruanganModel.updateRuangan(
+      ruanganId,
+      ruanganData
+    );
+    return updatedRuangan.rows[0];
+  }
 
-const deleteKursi = async (kursiId: number): Promise<Kursi | null> => {
-  // Implement the logic to delete a kursi (CRUD operation)
-};
+  public async deleteRuangan(ruanganId: number): Promise<Ruangan> {
+    const deletedRuangan = await this.ruanganModel.deleteRuangan(ruanganId);
+    return deletedRuangan.rows[0];
+  }
 
-export default {
-  createUser,
-  getUsers,
-  updateUser,
-  deleteUser,
-  createRuangan,
-  getRuangan,
-  updateRuangan,
-  deleteRuangan,
-  createKursi,
-  getKursi,
-  updateKursi,
-  deleteKursi,
-};
+  public async approveBookingRuangan(
+    adminId: number,
+    ruanganId: number,
+    approved: string
+  ): Promise<BookingRuangan> {
+    const approvedBookingRuangan =
+      await this.bookingRuanganModel.updateBookingRuanganApproval(
+        adminId,
+        ruanganId,
+        approved
+      );
+    return approvedBookingRuangan.rows[0];
+  }
+
+  public async createKursi(kursiData: Kursi): Promise<Kursi> {
+    const newKursi: Kursi = {
+      name: kursiData.name,
+      ruangan_id: kursiData.ruangan_id,
+      description: kursiData.description,
+    };
+    const kursi = await this.kursiModel.createKursi(newKursi);
+    return kursi.rows[0];
+  }
+}

@@ -1,10 +1,8 @@
 import { Pool, QueryResult } from "pg";
 
 export interface Ruangan {
-  id: number;
   name: string;
   description: string;
-  created_at: Date;
   images: string;
 }
 

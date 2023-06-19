@@ -1,10 +1,8 @@
 import { Pool, QueryResult } from "pg";
 
 export interface Kursi {
-  id: number;
   name: string;
   description: string;
-  created_at: Date;
   ruangan_id: number;
 }
 

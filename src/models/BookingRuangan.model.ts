@@ -1,8 +1,8 @@
 import { Pool, QueryResult } from "pg";
 
 export interface BookingRuangan {
-  id: number;
-  created_at: Date;
+  // id: number;
+  // created_at: Date;
   type: string;
   status: string;
   approved: boolean;

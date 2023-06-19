@@ -1,7 +1,8 @@
-import { UserModel, User } from "../models/user.model";
+import { UserModel, User } from "../models/User.model";
 import { AdminModel, Admin } from "../models/Admin.model";
-import { JwtUtils, UserRole } from "../utils/jwt";
-import { pool } from "../config";
+import { JwtUtils, UserRole } from "../utils/jwt.utils";
+import { pool } from "../config/db";
+import bcrypt from "bcrypt";
 
 export class AuthService {
   private userModel: UserModel;
@@ -12,29 +13,92 @@ export class AuthService {
     this.adminModel = new AdminModel(pool);
   }
 
-  public async login(
-    email: string,
-    password: string,
-    role: UserRole
-  ): Promise<string> {
-    let result;
+  public async loginUser(email: string, password: string): Promise<string> {
+    const user = await this.userModel.getUserByEmail(email);
 
-    if (role === UserRole.User) {
-      result = await this.userModel.getByEmail(email);
-    } else if (role === UserRole.Admin) {
-      result = await this.adminModel.getByEmail(email);
-    }
-
-    // Check if user/admin exists and password matches
-    if (result.rows.length === 0 || result.rows[0].password !== password) {
+    if (!user) {
       throw new Error("Invalid email or password");
     }
 
-    // Generate and return a JWT token
-    const id = result.rows[0].id;
-    const token = JwtUtils.generateToken(id, role);
+    const passwordMatch = await bcrypt.compare(password, user.rows[0].password);
+
+    if (!passwordMatch) {
+      throw new Error("Invalid email or password");
+    }
+
+    const token = JwtUtils.generateToken(user.rows[0].id, UserRole.User);
     return token;
   }
 
-  // Add other authentication-related operations here
+  public async loginAdmin(email: string, password: string): Promise<string> {
+    const admin = await this.adminModel.getAdminByEmail(email);
+
+    if (!admin) {
+      throw new Error("Invalid email or password");
+    }
+
+    const passwordMatch = await bcrypt.compare(
+      password,
+      admin.rows[0].password
+    );
+
+    if (!passwordMatch) {
+      throw new Error("Invalid email or password");
+    }
+
+    const token = JwtUtils.generateToken(admin.rows[0].id, UserRole.Admin);
+    return token;
+  }
+
+  public async registerUser(
+    name: string,
+    email: string,
+    password: string,
+    avatar: string
+  ): Promise<User> {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser: User = {
+      name,
+      email,
+      password: hashedPassword,
+      avatar,
+      role: "User",
+    };
+
+    //check if user already exists
+
+    const userExists = await this.userModel.getUserByEmail(email);
+    if (userExists) {
+      throw new Error("User already exists");
+    }
+
+    const user = await this.userModel.createUser(newUser);
+    return user.rows[0];
+  }
+
+  public async registerAdmin(
+    name: string,
+    email: string,
+    password: string,
+    avatar: string
+  ): Promise<Admin> {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newAdmin: Admin = {
+      name,
+      email,
+      password: hashedPassword,
+      avatar,
+      role: "Admin",
+    };
+
+    //check if admin already exists
+
+    const adminExists = await this.adminModel.getAdminByEmail(email);
+    if (adminExists) {
+      throw new Error("Admin already exists");
+    }
+
+    const admin = await this.adminModel.createAdmin(newAdmin);
+    return admin.rows[0];
+  }
 }

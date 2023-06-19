@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import { JwtUtils, UserRole } from "../utils/jwt.utils";
 
 const authenticateAdmin = (req: Request, res: Response, next: NextFunction) => {
   // Extract token from request headers
@@ -11,14 +11,11 @@ const authenticateAdmin = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     // Verify token and check for admin role
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as {
-      role: string;
-    };
+    const decoded = JwtUtils.verifyToken(token) as { role: string };
 
-    if (decoded.role !== "admin") {
+    if (decoded.role !== UserRole.Admin) {
       return res.status(403).json({ message: "Admin access only" });
     }
-
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });
@@ -35,11 +32,9 @@ const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     // Verify token and check for user role
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as {
-      role: string;
-    };
+    const decoded = JwtUtils.verifyToken(token) as { role: string };
 
-    if (decoded.role !== "user") {
+    if (decoded.role !== UserRole.User) {
       return res.status(403).json({ message: "User access only" });
     }
 

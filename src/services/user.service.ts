@@ -1,53 +1,38 @@
-import db from "../config/db";
-import User from "../models/User.model";
+import { UserModel, User } from "../models/User.model";
+import { pool } from "../config/db";
+import { BookingKursi, BookingKursiModel } from "../models/BookingKursi.model";
+import {
+  BookingRuangan,
+  BookingRuanganModel,
+} from "../models/BookingRuangan.model";
+export class UserService {
+  private userModel: UserModel;
+  private bookingKursiModel: BookingKursiModel;
+  private bookingRuanganModel: BookingRuanganModel;
 
-const createUser = async (
-    name: string,
-    email: string,
-    password: string,
-    avatar: string
-  ): Promise<User> => {
-    try {
-      const query = `INSERT INTO users (name, email, password, avatar, role) VALUES ('${name}', '${email}', '${password}', '${avatar}', 'user') RETURNING *`;
-      const result = await db.query<User>(query);
-      return result.rows[0];
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-  
-  const getUsers = async (): Promise<User[]> => {
-    try {
-      const query = "SELECT * FROM users";
-      const result = await db.query<User>(query);
-      return result.rows;
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-  
-  const updateUser = async (
-    userId: number,
-    name: string,
-    email: string,
-    password: string
-  ): Promise<User | null> => {
-    try {
-      const query = `UPDATE users SET name='${name}', email='${email}', password='${password}' WHERE id=${userId} RETURNING *`;
-      const result = await db.query<User>(query);
-      return result.rows[0];
-    }
-  };
-  
-const deleteUser = async (userId: number): Promise<User | null> => {
-    try {
-        const query = `DELETE FROM users WHERE id=${userId} RETURNING *`;
-        const result = await db.query<User>(query);
-        return result.rows[0];
-    } catch (error) {
-        throw new Error(error);
-    }
-};
+  constructor() {
+    this.userModel = new UserModel(pool);
+    this.bookingKursiModel = new BookingKursiModel(pool);
+    this.bookingRuanganModel = new BookingRuanganModel(pool);
+  }
 
-
-
+  public async updateUser(userId: number, userData: User): Promise<User> {
+    const updatedUser = await this.userModel.updateUser(userId, userData);
+    return updatedUser.rows[0];
+  }
+  public async bookingRuangan(
+    bookingRuanganData: BookingRuangan
+  ): Promise<BookingRuangan> {
+    const newBookingRuangan: BookingRuangan = {
+      id_user: bookingRuanganData.id_user,
+      id_ruangan: bookingRuanganData.id_ruangan,
+      tanggal: bookingRuanganData.tanggal,
+      waktu_mulai: bookingRuanganData.waktu_mulai,
+      waktu_selesai: bookingRuanganData.waktu_selesai,
+    };
+    const bookingRuangan = await this.bookingRuanganModel.createBookingRuangan(
+      newBookingRuangan
+    );
+    return bookingRuangan.rows[0];
+  }
+}

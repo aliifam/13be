@@ -1,8 +1,6 @@
 import { Pool, QueryResult } from "pg";
 
-interface BookingKursi {
-  id: number;
-  created_at: Date;
+export interface BookingKursi {
   status: string;
   start_time: Date;
   end_time: Date;
