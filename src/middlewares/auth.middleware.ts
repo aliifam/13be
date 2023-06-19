@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { JwtUtils, UserRole } from "../utils/jwt.utils";
 
-const authenticateAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const authenticateAdmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // Extract token from request headers
   const token = req.headers.authorization?.split(" ")[1];
 
@@ -22,7 +26,11 @@ const authenticateAdmin = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
+export const authenticateUser = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // Extract token from request headers
   const token = req.headers.authorization?.split(" ")[1];
 
@@ -43,5 +51,3 @@ const authenticateUser = (req: Request, res: Response, next: NextFunction) => {
     return res.status(401).json({ message: "Invalid token" });
   }
 };
-
-export default { authenticateAdmin, authenticateUser };

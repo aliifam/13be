@@ -1,13 +1,14 @@
 import express from "express";
-import { bookingController } from "../controllers";
-import { authMiddleware } from "../middlewares";
+import { AuthController } from "../controllers/auth.controller";
 
 const router = express.Router();
 
-router.use(authMiddleware.authenticateUser);
+const authController = new AuthController();
 
-router.post("/ruangan", bookingController.bookRuangan);
-router.post("/kursi", bookingController.bookKursi);
-router.post("/presence", bookingController.confirmPresence);
+//login and register admin
+router.post("/login/admin", authController.loginAdmin);
+
+//login and register user
+router.post("/login/user", authController.loginUser);
 
 export default router;
