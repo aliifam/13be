@@ -1,8 +1,11 @@
 import express from "express";
 import { configDotenv } from "dotenv";
-import AdminRouter from "./routes/admin.routes";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
+import AdminRouter from "./routes/admin.routes";
+import UserRouter from "./routes/user.routes";
+import AuthRouter from "./routes/auth.routes";
 
 configDotenv();
 
