@@ -13,7 +13,7 @@ export class AuthController {
       const { email, password } = req.body;
       const token = await this.authService.loginAdmin(email, password);
       res.json({ token });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   };
@@ -23,7 +23,7 @@ export class AuthController {
       const { email, password } = req.body;
       const token = await this.authService.loginUser(email, password);
       res.json({ token });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   };
@@ -38,7 +38,7 @@ export class AuthController {
         avatar
       );
       res.json({ token });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   };

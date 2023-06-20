@@ -23,11 +23,13 @@ export class UserService {
     bookingRuanganData: BookingRuangan
   ): Promise<BookingRuangan> {
     const newBookingRuangan: BookingRuangan = {
-      id_user: bookingRuanganData.id_user,
-      id_ruangan: bookingRuanganData.id_ruangan,
-      tanggal: bookingRuanganData.tanggal,
-      waktu_mulai: bookingRuanganData.waktu_mulai,
-      waktu_selesai: bookingRuanganData.waktu_selesai,
+      user_id: bookingRuanganData.user_id,
+      ruangan_id: bookingRuanganData.ruangan_id,
+      start_time: bookingRuanganData.start_time,
+      end_time: bookingRuanganData.end_time,
+      approved: "pending",
+      status: "pending",
+      admin_id: 0,
     };
     const bookingRuangan = await this.bookingRuanganModel.createBookingRuangan(
       newBookingRuangan

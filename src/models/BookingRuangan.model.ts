@@ -4,9 +4,8 @@ import { pool } from "../config/db";
 export interface BookingRuangan {
   // id: number;
   // created_at: Date;
-  type: string;
   status: string;
-  approved: boolean;
+  approved: string;
   start_time: Date;
   end_time: Date;
   user_id: number;
@@ -25,7 +24,7 @@ export class BookingRuanganModel {
     bookingRuanganData: BookingRuangan
   ): Promise<QueryResult> {
     try {
-      const query = `INSERT INTO booking_ruangan (type, status, start_time, end_time, user_id, admin_id, ruangan_id) VALUES ('${bookingRuanganData.type}', '${bookingRuanganData.status}', '${bookingRuanganData.start_time}', '${bookingRuanganData.end_time}', ${bookingRuanganData.user_id}, ${bookingRuanganData.admin_id}, ${bookingRuanganData.ruangan_id}) RETURNING *`;
+      const query = `INSERT INTO booking_ruangan (status, start_time, end_time, user_id, admin_id, ruangan_id) VALUES ('${bookingRuanganData.status}', '${bookingRuanganData.start_time}', '${bookingRuanganData.end_time}', ${bookingRuanganData.user_id}, ${bookingRuanganData.admin_id}, ${bookingRuanganData.ruangan_id}) RETURNING *`;
       return this.pool.query(query);
     } catch (error) {
       throw new Error(error as string);
