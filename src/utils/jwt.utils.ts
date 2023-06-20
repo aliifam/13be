@@ -1,4 +1,7 @@
+import { configDotenv } from "dotenv";
 import jwt from "jsonwebtoken";
+
+configDotenv();
 
 export enum UserRole {
   User = "user",

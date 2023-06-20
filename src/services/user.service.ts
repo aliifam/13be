@@ -1,5 +1,4 @@
 import { UserModel, User } from "../models/User.model";
-import { pool } from "../config/db";
 import { BookingKursi, BookingKursiModel } from "../models/BookingKursi.model";
 import {
   BookingRuangan,
@@ -11,9 +10,9 @@ export class UserService {
   private bookingRuanganModel: BookingRuanganModel;
 
   constructor() {
-    this.userModel = new UserModel(pool);
-    this.bookingKursiModel = new BookingKursiModel(pool);
-    this.bookingRuanganModel = new BookingRuanganModel(pool);
+    this.userModel = new UserModel();
+    this.bookingKursiModel = new BookingKursiModel();
+    this.bookingRuanganModel = new BookingRuanganModel();
   }
 
   public async updateUser(userId: number, userData: User): Promise<User> {

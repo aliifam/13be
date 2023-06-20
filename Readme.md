@@ -58,3 +58,9 @@ Database -> Model -> Service -> Controller -> Route -> Client
 - [x] implementing json web token for authentication and authorization
 - [x] implementing cloudinary for image storage (3d party api integration)
 - [x] implementing docker for containerization
+
+## Booking status
+
+### kursi
+
+- [x] accept

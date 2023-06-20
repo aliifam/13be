@@ -1,4 +1,5 @@
 import { Pool, QueryResult } from "pg";
+import { pool } from "../config/db";
 
 export interface User {
   name: string;
@@ -12,7 +13,7 @@ export class UserModel {
   private pool: Pool;
 
   constructor() {
-    this.pool = new Pool();
+    this.pool = pool;
   }
 
   public async createUser(userData: User): Promise<QueryResult> {

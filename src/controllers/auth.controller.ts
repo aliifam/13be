@@ -27,4 +27,19 @@ export class AuthController {
       res.status(500).json({ error: error.message });
     }
   };
+
+  public registerAdmin = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { name, email, password, avatar } = req.body;
+      const token = await this.authService.registerAdmin(
+        name,
+        email,
+        password,
+        avatar
+      );
+      res.json({ token });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
 }

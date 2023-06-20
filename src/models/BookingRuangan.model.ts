@@ -1,4 +1,5 @@
 import { Pool, QueryResult } from "pg";
+import { pool } from "../config/db";
 
 export interface BookingRuangan {
   // id: number;
@@ -17,7 +18,7 @@ export class BookingRuanganModel {
   private pool: Pool;
 
   constructor() {
-    this.pool = new Pool();
+    this.pool = pool;
   }
 
   public async createBookingRuangan(

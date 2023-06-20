@@ -1,6 +1,5 @@
 import { AdminModel, Admin } from "../models/Admin.model";
 import { UserModel, User } from "../models/User.model";
-import { pool } from "../config/db";
 import { Ruangan, RuanganModel } from "../models/Ruangan.model";
 import { Kursi, KursiModel } from "../models/Kursi.model";
 import {
@@ -16,11 +15,11 @@ export class AdminService {
   private bookingRuanganModel: BookingRuanganModel;
 
   constructor() {
-    this.adminModel = new AdminModel(pool);
-    this.userModel = new UserModel(pool);
-    this.ruanganModel = new RuanganModel(pool);
-    this.kursiModel = new KursiModel(pool);
-    this.bookingRuanganModel = new BookingRuanganModel(pool);
+    this.adminModel = new AdminModel();
+    this.userModel = new UserModel();
+    this.ruanganModel = new RuanganModel();
+    this.kursiModel = new KursiModel();
+    this.bookingRuanganModel = new BookingRuanganModel();
   }
 
   public async createAdmin(adminData: Admin): Promise<Admin> {

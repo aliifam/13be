@@ -2,13 +2,13 @@ import express from "express";
 import { AdminController } from "../controllers/admin.controller";
 import { authenticateAdmin } from "../middlewares/auth.middleware";
 
-const router = express.Router();
+const AdminRouter = express.Router();
 
 const adminController = new AdminController();
 
-router.use(authenticateAdmin);
+AdminRouter.use(authenticateAdmin);
 
 // Get all users
-router.get("/users", adminController.getAllUsers);
+AdminRouter.get("/users", adminController.getAllUsers);
 
-export default router;
+export default AdminRouter;

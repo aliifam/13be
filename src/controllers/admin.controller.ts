@@ -12,7 +12,7 @@ export class AdminController {
     try {
       const users = await this.adminService.getUsers();
       res.status(200).json(users);
-    } catch (error) {
+    } catch (error: any) {
       res.status(400).json({ message: error.message });
     }
   }

@@ -1,7 +1,6 @@
 import { UserModel, User } from "../models/User.model";
 import { AdminModel, Admin } from "../models/Admin.model";
 import { JwtUtils, UserRole } from "../utils/jwt.utils";
-import { pool } from "../config/db";
 import bcrypt from "bcrypt";
 
 export class AuthService {
@@ -9,8 +8,8 @@ export class AuthService {
   private adminModel: AdminModel;
 
   constructor() {
-    this.userModel = new UserModel(pool);
-    this.adminModel = new AdminModel(pool);
+    this.userModel = new UserModel();
+    this.adminModel = new AdminModel();
   }
 
   public async loginUser(email: string, password: string): Promise<string> {
